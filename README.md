@@ -1,2 +1,2 @@
 # butterknife
-A simple web scraping library for python utilizing BeautifulSoup
+A simple web scraping library for python3 utilizing BeautifulSoup
