@@ -21,11 +21,11 @@ class PagePull(object):
 	def Pull(self):
 		"""Tries to pull the page. If successful (gets valid html content) then it returns True. Otherwise it returns False. This value should be stored in self.loaded."""
 		try:
-			with closing(get(url, stream=True)) as response:
+			with closing(get(self.pageurl, stream=True)) as response:
 				if self.CheckResponse(response):
 					self.htmlcontent=response.content
 					return True
-				else return False
+				else: return False
 		except RequestException as e:
 			logging.warning("Could not request page %s." % pageurl)  
 			return False
@@ -45,7 +45,7 @@ class PagePull(object):
 		if mypull: mycontent=str(mypull)
 		else: whatever you do if the content isn't current.
 		"""
-		return self.htmlcontent
+		return str(self.htmlcontent, 'utf-8', 'ignore')
 
 class Scrape(object):
 	""" The basic 'scrape' class. It aggregates multiple PagePulls, and cleans up the data a bit to make it more useful."""
