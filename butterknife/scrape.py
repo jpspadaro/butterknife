@@ -27,13 +27,15 @@ class PagePull(object):
 					return True
 				else: return False
 		except RequestException as e:
-			logging.warning("Could not request page %s." % pageurl)  
+			logging.warning("Could not request page %s." % self.pageurl)  
 			return False
 
 	def CheckResponse(self, response):
 		"""Checks to see if what we got from the request is a real content or a failed response."""
 		contenttype=response.headers['Content-Type'].lower()
 		return (response.status_code == 200 and contenttype is not None and contenttype.find(self.htmlcontenttype) > -1)
+	def __len__(self):
+		return len(self.htmlcontent)
 	def __bool__(self):
 		"""Just use the loaded state as the bool."""
 		return self.loaded
@@ -49,5 +51,10 @@ class PagePull(object):
 
 class Scrape(object):
 	""" The basic 'scrape' class. It aggregates multiple PagePulls, and cleans up the data a bit to make it more useful."""
-	def __init__(self):
-		pass
+	def __init__(self,urls):
+		"""Takes a list of urls and sets up PagePull objects with initial pulls."""
+		self.pages=[{'url':url,'pull':PagePull(url)} for url in urls]
+	def SoupifyAll(self):
+		"""Generates BeautifulSoup html tags list for each page."""
+		for page in self.pages:
+			page['html']=BeautifulSoup(str(page['pull']),'html.parser')	
