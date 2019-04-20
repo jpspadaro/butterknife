@@ -1,6 +1,7 @@
 # butterknife
 A simple web scraping library for python3 utilizing BeautifulSoup
 
+## Basic Usage
 Example:
 ```
 >>> from bs4 import BeautifulSoup
